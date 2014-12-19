@@ -5,9 +5,14 @@
 (function (){
     document.addEventListener("DOMContentLoaded", function onDOMContentLoaded(aEvent) {
 	document.removeEventListener("DOMContentLoaded", onDOMContentLoaded);
+	checkAccount();
 	document.documentElement.style.visibility = "hidden";
 	setTimeout(function () {
             document.documentElement.style.visibility = "";
 	}, 1000);
 });
+
+function checkAccount() {
+    alert(MailServices.accounts);
+}
 })();
