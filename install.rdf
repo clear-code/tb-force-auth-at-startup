@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="force-auth-at-startup@clear-code.com"
+                   em:name="Force Authentication at Startup"
+                   em:version="0.1"
+                   em:description="Always ask password at the startup."
+                   em:creator="ClearCode Inc."
+                   em:homepageURL="http://www.clear-code.com/">
+
+    <!--em:updateURL></em:updateURL-->
+    <!--em:updateKey></em:updateKey-->
+
+    <em:localized>
+      <RDF:Description em:locale="en-US"
+                       em:name="Force Authentication at Startup"
+                       em:description="Always ask password at the startup."
+                       em:creator="ClearCode Inc."
+                       em:homepageURL="http://www.clear-code.com/">
+      </RDF:Description>
+    </em:localized>
+
+    <em:localized>
+      <RDF:Description em:locale="ja"
+                       em:name="Force Authentication at Startup"
+                       em:description="起動時に常にパスワードを尋ねます。"
+                       em:creator="ClearCode Inc."
+                       em:homepageURL="http://www.clear-code.com/">
+      </RDF:Description>
+    </em:localized>
+
+    <em:targetApplication>
+      <!-- Thunderbird -->
+      <RDF:Description em:id="{3550f703-e582-4d05-9a08-453d09bdfdc6}"
+                        em:minVersion="31.0"
+                        em:maxVersion="36.0a1.*" />
+        </em:targetApplication>
+  </RDF:Description>
+</RDF:RDF>
