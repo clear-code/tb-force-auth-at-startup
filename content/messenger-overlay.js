@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-document.addEventListener("DOMContentLoaded", function(aEvent) {
-    document.documentElement.style.visibility = "hidden";
+(function (){
+    document.addEventListener("DOMContentLoaded", function onDOMContentLoaded(aEvent) {
+	document.removeEventListener("DOMContentLoaded", onDOMContentLoaded);
+	document.documentElement.style.visibility = "hidden";
 });
+})();
