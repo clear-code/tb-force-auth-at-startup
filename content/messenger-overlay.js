@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 (function (){
+    var Ci = Components.interfaces;
+
     document.addEventListener("DOMContentLoaded", function onDOMContentLoaded(aEvent) {
 	document.removeEventListener("DOMContentLoaded", onDOMContentLoaded);
 	var servers = collectAccountsToBeLoggedIn();
@@ -20,7 +22,7 @@
 	var allServers = accountManager.allServers;
 	var serversToBeLoggedIn = [];
 	for (var i = 0,  maxi = allServers.length; i < maxi; ++i) {
-	    let currentServer = allServers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
+	    let currentServer = allServers.queryElementAt(i, Ci.nsIMsgIncomingServer);
 	    if (currentServer.type == "none")
 		continue;
 
