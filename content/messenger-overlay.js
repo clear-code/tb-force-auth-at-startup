@@ -6,5 +6,8 @@
     document.addEventListener("DOMContentLoaded", function onDOMContentLoaded(aEvent) {
 	document.removeEventListener("DOMContentLoaded", onDOMContentLoaded);
 	document.documentElement.style.visibility = "hidden";
+	setTimeout(function () {
+            document.documentElement.style.visibility = "";
+	}, 1000);
 });
 })();
