@@ -5,14 +5,27 @@
 (function (){
     document.addEventListener("DOMContentLoaded", function onDOMContentLoaded(aEvent) {
 	document.removeEventListener("DOMContentLoaded", onDOMContentLoaded);
-	checkAccount();
+	var servers = collectAccountsToBeLoggedIn();
+	if (servers.length == 0)
+	    return;
+
 	document.documentElement.style.visibility = "hidden";
 	setTimeout(function () {
             document.documentElement.style.visibility = "";
 	}, 1000);
 });
 
-function checkAccount() {
-    alert(MailServices.accounts);
-}
+    function collectAccountsToBeLoggedIn() {
+	var accountManager = MailServices.accounts;
+	var allServers = accountManager.allServers;
+	var serversToBeLoggedIn = [];
+	for (var i = 0,  maxi = allServers.length; i < maxi; ++i) {
+	    let currentServer = allServers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
+	    if (currentServer.type == "none")
+		continue;
+
+	    serversToBeLoggedIn.push(currentServer);
+	}
+	return serversToBeLoggedIn;
+    }
 })();
