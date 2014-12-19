@@ -28,7 +28,7 @@
 	    server.verifyLogon(listener, msgWindow);
 	}, 1000);
 	document.documentElement.style.visibility = "hidden";
-});
+    });
 
     function collectAccountsToBeLoggedIn() {
 	var accountManager = MailServices.accounts;
