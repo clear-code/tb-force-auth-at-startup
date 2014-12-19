@@ -11,10 +11,23 @@
 	if (servers.length == 0)
 	    return;
 
-	document.documentElement.style.visibility = "hidden";
 	setTimeout(function () {
-            document.documentElement.style.visibility = "";
+	    let msgWindow = MailServices.mailSession.topmostMsgWindow;
+	    var server = servers[0];
+	    let listener = {
+		OnStartRunningUrl: function () {
+		},
+		OnStopRunningUrl: function (url, exitCode) {
+		    if (Components.isSuccessCode(exitCode)) {
+			document.documentElement.style.visibility = "";
+		    } else {
+			window.close();
+		    }
+		}
+	    };
+	    server.verifyLogon(listener, msgWindow);
 	}, 1000);
+	document.documentElement.style.visibility = "hidden";
 });
 
     function collectAccountsToBeLoggedIn() {
