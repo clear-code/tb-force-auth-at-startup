@@ -4,6 +4,8 @@
 
 (function () {
     var Ci = Components.interfaces;
+    var Cc = Components.classes;
+    let observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 
     document.addEventListener("DOMContentLoaded", function onDOMContentLoaded(aEvent) {
 	document.removeEventListener("DOMContentLoaded", onDOMContentLoaded);
@@ -11,8 +13,11 @@
 	if (servers.length == 0)
 	    return;
 
-	setTimeout(function () {
+	let loadObserver = {
+	    observe : function onLoaded(aEvent) {
 	    let msgWindow = MailServices.mailSession.topmostMsgWindow;
+	    observerService.removeObserver(loadObserver, 'mail-startup-done', false);
+
 	    let listener = {
 		successCount: 0,
 		failureCount: 0,
@@ -41,7 +46,11 @@
 	    for (var i = 0, maxServer = servers.length; i < maxServer; ++i) {
 		servers[i].verifyLogon(listener, msgWindow);
 	    }
-	}, 1000);
+	    }
+	};
+
+	observerService.addObserver(loadObserver, 'mail-startup-done', false);
+
 	document.documentElement.style.visibility = "hidden";
     });
 
