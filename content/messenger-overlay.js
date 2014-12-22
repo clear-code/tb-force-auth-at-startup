@@ -15,37 +15,37 @@
 
 	let loadObserver = {
 	    observe : function onLoaded(aEvent) {
-	    let msgWindow = MailServices.mailSession.topmostMsgWindow;
-	    observerService.removeObserver(loadObserver, 'mail-startup-done', false);
+		let msgWindow = MailServices.mailSession.topmostMsgWindow;
+		observerService.removeObserver(loadObserver, 'mail-startup-done', false);
 
-	    let listener = {
-		successCount: 0,
-		failureCount: 0,
-		OnStartRunningUrl: function () {
-		},
-		OnStopRunningUrl: function (url, exitCode) {
-		    if (Components.isSuccessCode(exitCode)) {
-			this.successCount++;
-		    } else {
-			this.failureCount++;
+		let listener = {
+		    successCount: 0,
+		    failureCount: 0,
+		    OnStartRunningUrl: function () {
+		    },
+		    OnStopRunningUrl: function (url, exitCode) {
+			if (Components.isSuccessCode(exitCode)) {
+			    this.successCount++;
+			} else {
+			    this.failureCount++;
+			}
+			this.checkFinish();
+		    },
+
+		    checkFinish: function () {
+			if (this.successCount + this.failureCount != servers.length)
+			    return;
+
+			if (this.successCount == servers.length) {
+			    document.documentElement.style.visibility = "";
+			} else {
+			    window.close();
+			}
 		    }
-		    this.checkFinish();
-		},
-
-		checkFinish: function () {
-		    if (this.successCount + this.failureCount != servers.length)
-			return;
-
-		    if (this.successCount == servers.length) {
-			document.documentElement.style.visibility = "";
-		    } else {
-			window.close();
-		    }
+		};
+		for (var i = 0, maxServer = servers.length; i < maxServer; ++i) {
+		    servers[i].verifyLogon(listener, msgWindow);
 		}
-	    };
-	    for (var i = 0, maxServer = servers.length; i < maxServer; ++i) {
-		servers[i].verifyLogon(listener, msgWindow);
-	    }
 	    }
 	};
 
