@@ -5,7 +5,8 @@
 (function (aGlobal) {
   var Ci = Components.interfaces;
   var Cc = Components.classes;
-  let observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
+  let observerService = Cc["@mozilla.org/observer-service;1"]
+                          .getService(Ci.nsIObserverService);
   var ForceAuthAtStartUp = {
     collectAccountsToBeLoggedIn: function collectAccountsToBeLoggedIn() {
       var accountManager = MailServices.accounts;
