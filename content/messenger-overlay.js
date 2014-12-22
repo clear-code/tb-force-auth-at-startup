@@ -13,19 +13,34 @@
 
 	setTimeout(function () {
 	    let msgWindow = MailServices.mailSession.topmostMsgWindow;
-	    var server = servers[0];
 	    let listener = {
+		successCount: 0,
+		failureCount: 0,
 		OnStartRunningUrl: function () {
 		},
 		OnStopRunningUrl: function (url, exitCode) {
 		    if (Components.isSuccessCode(exitCode)) {
+			this.successCount++;
+		    } else {
+			this.failureCount++;
+		    }
+		    this.checkFinish();
+		},
+
+		checkFinish: function () {
+		    if (this.successCount + this.failureCount != servers.length)
+			return;
+
+		    if (this.successCount == servers.length) {
 			document.documentElement.style.visibility = "";
 		    } else {
 			window.close();
 		    }
 		}
 	    };
-	    server.verifyLogon(listener, msgWindow);
+	    for (var i = 0, maxServer = servers.length; i < maxServer; ++i) {
+		servers[i].verifyLogon(listener, msgWindow);
+	    }
 	}, 1000);
 	document.documentElement.style.visibility = "hidden";
     });
