@@ -35,7 +35,9 @@
     },
 
     exitApplication: function exitApplication() {
-      window.close();
+      var appStartup = Cc["@mozilla.org/toolkit/app-startup;1"]
+                         .getService(Ci.nsIAppStartup);
+      appStartup.quit(Ci.nsIAppStartup.eAttemptQuit);
     },
 
     shouldBlock: function shouldBlock() {
