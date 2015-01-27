@@ -7,6 +7,8 @@
   var Cc = Components.classes;
   let observerService = Cc["@mozilla.org/observer-service;1"]
                           .getService(Ci.nsIObserverService);
+  let Pref = Cc["@mozilla.org/preferences;1"]
+               .getService(Ci.nsIPrefBranch);
   var ForceAuthAtStartUp = {
     collectAccountsToBeLoggedIn: function collectAccountsToBeLoggedIn() {
       var accountManager = MailServices.accounts;
@@ -73,7 +75,7 @@
         return;
 
       if (this.successCount == this.serversToBeLoggedIn.length) {
-        this.showUI();
+        this.onSuccess();
       } else {
         this.exitApplication();
       }
@@ -96,6 +98,23 @@
       }
       this.checkAllAuthenticated();
     },
+
+    onSuccess: function onSuccess() {
+      this.showUI();
+      try {
+        let callback = Pref.getCharPref("extensions.force-auth-at-startup@clear-code.com.on_success");
+        if (callback) {
+          try {
+            (new Function(callback))();
+          }
+          catch(error) {
+            Components.utils.reportError(error);
+          }
+        }
+      }
+      catch(error) {
+      }
+    }
   };
 
   document.addEventListener("DOMContentLoaded", function onDOMContentLoaded(aEvent) {
