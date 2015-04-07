@@ -96,7 +96,7 @@
 
     getPopstateDatFor: function getPopstateDatFor(aServer) {
       var file = aServer.localPath.clone();
-      file.append('popstate.dat');
+      file.append("popstate.dat");
       return file;
     },
 
