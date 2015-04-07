@@ -94,10 +94,41 @@
       };
     },
 
+    getPopstateDatFor: function getPopstateDatFor(aServer) {
+      var file = aServer.localPath.clone();
+      file.append('popstate.dat');
+      return file;
+    },
+
     readPopstateFor: function readPopstateFor(aServer) {
+      var file = this.getPopstateDatFor(aServer);
+      if (!file.exists())
+        return null;
+
+      var stream = Cc["@mozilla.org/network/file-input-stream;1"]
+                     .createInstance(Ci.nsIFileInputStream);
+      var scriptableStream = Cc["@mozilla.org/scriptableinputstream;1"]
+                               .createInstance(Ci.nsIScriptableInputStream);
+      scriptableStream.init(stream);
+      var fileContents = scriptableStream.read(scriptableStream.available());
+      scriptableStream.close();
+      stream.close();
+      return fileContents;
     },
 
     writePopstateFor: function writePopstateFor(aServer, aState) {
+      if (!aState)
+        return;
+
+      var file = this.getPopstateDatFor(aServer);
+      if (file.exists())
+        file.remove(true);
+      file.create(file.NORMAL_FILE_TYPE, 0666);
+      var stream = Cc["@mozilla.org/network/file-output-stream;1"]
+                     .createInstance(Ci.nsIFileOutputStream);
+      stream.init(file, 2, 0x200, false); // open as "write only"
+      stream.write(aState, aState.length);
+      stream.close();
     },
 
     successCount: 0,
