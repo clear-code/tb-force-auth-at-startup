@@ -107,6 +107,7 @@
 
       var stream = Cc["@mozilla.org/network/file-input-stream;1"]
                      .createInstance(Ci.nsIFileInputStream);
+      stream.init(file, 1, 0, false); // open as "read only"
       var scriptableStream = Cc["@mozilla.org/scriptableinputstream;1"]
                                .createInstance(Ci.nsIScriptableInputStream);
       scriptableStream.init(stream);
