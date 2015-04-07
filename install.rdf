@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="force-auth-at-startup@clear-code.com"
                    em:name="Force Authentication at Startup"
-                   em:version="0.1"
+                   em:version="0.2"
                    em:description="Always ask password at the startup."
                    em:creator="ClearCode Inc."
                    em:homepageURL="http://www.clear-code.com/">
