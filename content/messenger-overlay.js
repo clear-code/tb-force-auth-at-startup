@@ -51,7 +51,7 @@
       if (!this.shouldBlock())
         return;
 
-      observerService.addObserver(this, 'mail-startup-done', false);
+      observerService.addObserver(this, "mail-startup-done", false);
       this.hideUI();
     },
 
@@ -83,7 +83,7 @@
 
     // nsIObserver
     observe: function observe(aEvent) {
-      observerService.removeObserver(this, 'mail-startup-done', false);
+      observerService.removeObserver(this, "mail-startup-done", false);
       this.onMailStartupDone();
     },
 
