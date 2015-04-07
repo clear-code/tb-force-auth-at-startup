@@ -60,8 +60,44 @@
 
       // see: OnStopRunningUrl
       this.serversToBeLoggedIn.forEach(function (aServer) {
-        aServer.verifyLogon(this, msgWindow);
+        var listener = this.createListenerFor(aServer);
+        aServer.verifyLogon(listener, msgWindow);
       }, this);
+    },
+
+    createListenerFor: function createListener(aServer) {
+      // "verifyLogon" clears existing popstate.dat.
+      // We have to do backup/restore it manually.
+      // See also:
+      //   http://mxr.mozilla.org/comm-esr31/source/mailnews/local/src/nsPop3Service.cpp#146
+      //   http://mxr.mozilla.org/comm-esr31/source/mailnews/local/src/nsPop3Protocol.cpp#575
+      //   http://mxr.mozilla.org/comm-esr31/source/mailnews/local/src/nsPop3Protocol.cpp#1069
+      var popstate = null;
+      if (aServer.type == "pop3")
+        popstate = this.readPopstateFor(aServer);
+
+      return {
+        // nsIUrlListener
+        OnStartRunningUrl: function OnStartRunningUrl() {
+        },
+        OnStopRunningUrl: (function OnStopRunningUrl(aUrl, aExitCode) {
+          if (popstate)
+            this.writePopstateFor(aServer, popstate);
+
+          if (Components.isSuccessCode(aExitCode)) {
+            this.successCount++;
+          } else {
+            this.failureCount++;
+          }
+          this.checkAllAuthenticated();
+        }).bind(this)
+      };
+    },
+
+    readPopstateFor: function readPopstateFor(aServer) {
+    },
+
+    writePopstateFor: function writePopstateFor(aServer, aState) {
     },
 
     successCount: 0,
@@ -85,18 +121,6 @@
     observe: function observe(aEvent) {
       observerService.removeObserver(this, "mail-startup-done", false);
       this.onMailStartupDone();
-    },
-
-    // nsIUrlListener
-    OnStartRunningUrl: function OnStartRunningUrl() {
-    },
-    OnStopRunningUrl: function OnStopRunningUrl(aUrl, aExitCode) {
-      if (Components.isSuccessCode(aExitCode)) {
-        this.successCount++;
-      } else {
-        this.failureCount++;
-      }
-      this.checkAllAuthenticated();
     },
 
     onSuccess: function onSuccess() {
