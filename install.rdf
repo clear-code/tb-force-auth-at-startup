@@ -8,7 +8,8 @@
                    em:version="0.2"
                    em:description="Always ask password at the startup."
                    em:creator="ClearCode Inc."
-                   em:homepageURL="http://www.clear-code.com/">
+                   em:homepageURL="http://www.clear-code.com/"
+                   em:type="2">
 
     <!--em:updateURL></em:updateURL-->
     <!--em:updateKey></em:updateKey-->
